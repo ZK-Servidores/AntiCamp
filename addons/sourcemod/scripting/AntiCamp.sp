@@ -35,7 +35,7 @@ public Plugin:myinfo =
 {
 	name = "AntiCamp",
 	author = "stachi, Franc1sco Franug, crashzk",
-	description = "Detects camping players",
+	description = "Detects campers and apply punishments",
 	version = PLUGIN_VERSION,
 	url = "http://www.stachi.de/"
 };
