@@ -1,27 +1,9 @@
-/**
- * Anticamp - SourceMod plugin to detect camping players
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-
-#pragma semicolon 1
-
 #include <sourcemod>
 #include <sdktools>
 #undef REQUIRE_EXTENSIONS
 #include <cstrike>
+
+#pragma semicolon 1
 
 #define YELLOW				"\x01"
 #define TEAMCOLOR			"\x03"
@@ -30,7 +12,6 @@
 #define NON_CAMPER_DELAY 	1.0
 #define MAX_WEAPONS 		49
 
-// Plugin definitions
 public Plugin:myinfo =
 {
 	name = "AntiCamp",
@@ -45,6 +26,7 @@ enum GameType
 	GAME_CSS,
 	GAME_CSGO
 };
+
 new GameType:g_iGame;
 new String:WeaponConfigFile[PLATFORM_MAX_PATH];
 new const String:g_sWeaponList[MAX_WEAPONS][13] = {"glock","usp","p228","deagle","elite","fiveseven","m3",
@@ -55,7 +37,7 @@ new const String:g_sWeaponList[MAX_WEAPONS][13] = {"glock","usp","p228","deagle"
 													"p250","sg556","sg553","sawedoff","mag7","nova","knifegg","taser","molotov",
 													"incgrenade","decoy"
 													};
-
+													
 new g_iWeaponCampTime[MAX_WEAPONS];
 new g_iOffsLastPlaceName = -1;
 new g_iOffsEyeAngle = -1;
@@ -153,7 +135,7 @@ public OnPluginStart()
 
 public OnMapStart()
 {
-	// beacon sound
+	// Beacon Sound
 	PrecacheSound("buttons/button17.wav",true);
 
 	if(g_iGame == GAME_CSGO)
@@ -167,7 +149,7 @@ public OnMapStart()
 		g_haloSprite = PrecacheModel("materials/sprites/halo01.vmt");
 	}
 
-	// Check map class
+	// Check Map Class
 	g_bIsCtMap = g_bIsTMap = false;
 	if(FindEntityByClassname(-1, "func_hostage_rescue") != -1)
 		g_bIsCtMap = true;
@@ -225,7 +207,7 @@ GetWeaponCampTime(client)
 	if(!g_bWeaponCfg)
 		return GetConVarInt(g_CvarCampTime);
 
-	// get weapon name
+	// Get Weapon Name
 	decl String:weapon[20];
 	GetClientWeapon(client,weapon,20);
 	ReplaceString(weapon, 20, "weapon_", "");
