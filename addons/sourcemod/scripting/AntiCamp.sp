@@ -583,6 +583,7 @@ public Action:PunishTimer(Handle:timer, any:client)
 
 		new Float:vecPos[3];
 		GetClientAbsOrigin(client, vecPos);
+		//EmitSoundToAll("buttons/button17.wav", client, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 1.0, SNDPITCH_NORMAL, -1, vecPos, NULL_VECTOR, true, 0.0);
 		EmitSoundToClient(client, "buttons/button17.wav", client, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 1.0, SNDPITCH_NORMAL, -1, vecPos, NULL_VECTOR, true, 0.0);
 	}
 
