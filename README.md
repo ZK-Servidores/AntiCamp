@@ -1,2 +1,2 @@
 # AntiCamp
- Detects campers and apply punishments
+Detects campers and apply punishments.
