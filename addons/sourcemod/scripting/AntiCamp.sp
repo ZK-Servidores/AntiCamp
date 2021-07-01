@@ -460,7 +460,6 @@ public Action:CaughtCampingTimer(Handle:timer, any:client)
 		decl String:camperSteamID[64];
 		GetClientName(client, name, sizeof(name));
 		GetTeamName(GetClientTeam(client),camperTeam,sizeof(camperTeam));
-		//GetClientAuthString(client, camperSteamID, sizeof(camperSteamID));		
 		GetClientAuthId(client, AuthId_Steam2, camperSteamID, sizeof(camperSteamID));
 
 		// Get weapon name
@@ -475,7 +474,7 @@ public Action:CaughtCampingTimer(Handle:timer, any:client)
 		new bool:Location = StrEqual(place, "", false);
 
 		// Log camping
-		LogToGame("\"%s<%d><%s><%s>\" triggered \"camper\"",name,GetClientUserId(client),camperSteamID,camperTeam);
+		LogToGame("\"%s<%d><%s><%s>\" triggered \"camper\"", name, GetClientUserId(client), camperSteamID, camperTeam);
 
 		// Print to chat
 		decl String:Saytext[192];
