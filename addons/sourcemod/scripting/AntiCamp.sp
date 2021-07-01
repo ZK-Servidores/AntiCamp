@@ -460,7 +460,8 @@ public Action:CaughtCampingTimer(Handle:timer, any:client)
 		decl String:camperSteamID[64];
 		GetClientName(client, name, sizeof(name));
 		GetTeamName(GetClientTeam(client),camperTeam,sizeof(camperTeam));
-		GetClientAuthString(client, camperSteamID, sizeof(camperSteamID));
+		//GetClientAuthString(client, camperSteamID, sizeof(camperSteamID));		
+		GetClientAuthId(client, AuthId_Steam2, camperSteamID, sizeof(camperSteamID));
 
 		// Get weapon name
 		decl String:weapon[20];
