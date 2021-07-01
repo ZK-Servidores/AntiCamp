@@ -18,7 +18,7 @@ public Plugin:myinfo =
 	author = "stachi, Franc1sco Franug, crashzk",
 	description = "Detects campers and apply punishments",
 	version = PLUGIN_VERSION,
-	url = "http://www.stachi.de/"
+	url = "https://github.com/ZK-Servidores/Plugins-SourceMod"
 };
 
 enum GameType
@@ -35,8 +35,7 @@ new const String:g_sWeaponList[MAX_WEAPONS][13] = {"glock","usp","p228","deagle"
 													"ump45","p90","m249","flashbang","hegrenade","smokegrenade","c4","knife",
 													"mp7","mp9","bizon","galilar","ssg08","scar20","hkp2000","tec9","negev",
 													"p250","sg556","sg553","sawedoff","mag7","nova","knifegg","taser","molotov",
-													"incgrenade","decoy"
-													};
+													"incgrenade","decoy"};
 													
 new g_iWeaponCampTime[MAX_WEAPONS];
 new g_iOffsLastPlaceName = -1;
@@ -217,7 +216,6 @@ GetWeaponCampTime(client)
 		if(StrEqual(g_sWeaponList[i], weapon, false) && g_iWeaponCampTime[i])
 			return g_iWeaponCampTime[i];
 	}
-
 	return	GetConVarInt(g_CvarCampTime);
 }
 
@@ -266,7 +264,7 @@ bool:IsCamping(client)
 
 public Action:EventPlayerDeath(Handle:event,const String:name[],bool:dontBroadcast)
 {
-	//Check if anticamp is enabled
+	// Check if anticamp is enabled
 	if(!GetConVarBool(g_CvarEnable))
 		return Plugin_Continue;
 
@@ -278,7 +276,7 @@ public Action:EventPlayerDeath(Handle:event,const String:name[],bool:dontBroadca
 
 public Action:EventBombPickup(Handle:event,const String:name[],bool:dontBroadcast)
 {
-	//Check if anticamp is enabled
+	// Check if anticamp is enabled
 	if(!GetConVarBool(g_CvarEnable))
 		return Plugin_Continue;
 
@@ -293,13 +291,12 @@ public Action:EventBombPickup(Handle:event,const String:name[],bool:dontBroadcas
 			}
 		}
 	}
-
 	return Plugin_Continue;
 }
 
 public Action:EventBombDropped(Handle:event,const String:name[],bool:dontBroadcast)
 {
-	//Check if anticamp is enabled
+	// Check if anticamp is enabled
 	if(!GetConVarBool(g_CvarEnable))
 		return Plugin_Continue;
 
@@ -311,13 +308,12 @@ public Action:EventBombDropped(Handle:event,const String:name[],bool:dontBroadca
 				ResetTimer(i);
 		}
 	}
-
 	return Plugin_Continue;
 }
 
 public Action:EventBombPlanted(Handle:event,const String:name[],bool:dontBroadcast)
 {
-	//Check if anticamp is enabled
+	// Check if anticamp is enabled
 	if(!GetConVarBool(g_CvarEnable))
 		return Plugin_Continue;
 
@@ -330,13 +326,12 @@ public Action:EventBombPlanted(Handle:event,const String:name[],bool:dontBroadca
 
 		}
 	}
-
 	return Plugin_Continue;
 }
 
 public Action:EventPlayerSpawn(Handle:event,const String:name[],bool:dontBroadcast)
 {
-	//Check if anticamp is enabled
+	// Check if anticamp is enabled
 	if(!GetConVarBool(g_CvarEnable))
 		return Plugin_Continue;
 
@@ -379,7 +374,7 @@ public Action:EventPlayerSpawn(Handle:event,const String:name[],bool:dontBroadca
 
 public Action:EventRoundEnd(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	//Check if anticamp is enabled
+	// Check if anticamp is enabled
 	if(!GetConVarBool(g_CvarEnable))
 		return Plugin_Continue;
 
@@ -396,7 +391,6 @@ public Action:EventRoundEnd(Handle:event, const String:name[], bool:dontBroadcas
 			}
 		}
 	}
-
 	return Plugin_Continue;
 }
 
@@ -435,7 +429,7 @@ public Action:CheckCamperTimer(Handle:timer, any:client)
 
 public Action:CaughtCampingTimer(Handle:timer, any:client)
 {
-	// check to make sure the client is still connected and there are players in both teams
+	// Check to make sure the client is still connected and there are players in both teams
 	if(!g_bTeamsHaveAlivePlayers || !IsClientInGame(client) || !IsPlayerAlive(client))
 	{
 		ResetTimer(client);
@@ -460,7 +454,7 @@ public Action:CaughtCampingTimer(Handle:timer, any:client)
 	}
 	else
 	{
-		// get client details
+		// Get client details
 		decl String:name[32];
 		decl String:camperTeam[18];
 		decl String:camperSteamID[64];
@@ -468,21 +462,21 @@ public Action:CaughtCampingTimer(Handle:timer, any:client)
 		GetTeamName(GetClientTeam(client),camperTeam,sizeof(camperTeam));
 		GetClientAuthString(client, camperSteamID, sizeof(camperSteamID));
 
-		// get weapon name
+		// Get weapon name
 		decl String:weapon[20];
 		GetClientWeapon(client,weapon,20);
 		ReplaceString(weapon, 20, "weapon_", "");
 
-		// get place name
+		// Get place name
 		decl String:place[24];
 		GetEntDataString(client, g_iOffsLastPlaceName, place, sizeof(place));
 
 		new bool:Location = StrEqual(place, "", false);
 
-		// log camping
+		// Log camping
 		LogToGame("\"%s<%d><%s><%s>\" triggered \"camper\"",name,GetClientUserId(client),camperSteamID,camperTeam);
 
-		// print to chat
+		// Print to chat
 		decl String:Saytext[192];
 		for(new i=1; i<=MaxClients; i++)
 		{
@@ -501,7 +495,7 @@ public Action:CaughtCampingTimer(Handle:timer, any:client)
 			}
 		}
 
-		// reset camp counter
+		// Reset camp counter
 		g_timerCount[client] = 0;
 
 		// start beacon timer
@@ -518,7 +512,7 @@ public Action:CaughtCampingTimer(Handle:timer, any:client)
 			g_hDelayTimerList[client] = CreateTimer(GetConVarFloat(g_CvarPunishDelay), PunishDelayTimer, client);
 		}
 
-		// start camp timer
+		// Start camp timer
 		KillTimer(g_hCampTimerList[client]);
 		g_hCampTimerList[client] = CreateTimer(1.0, CamperTimer, client, TIMER_REPEAT);
 	}
@@ -556,7 +550,6 @@ public Action:CamperTimer(Handle:timer, any:client)
 		ResetTimer(client);
 		g_hCampTimerList[client] = CreateTimer(NON_CAMPER_DELAY, CheckCamperTimer, client, TIMER_REPEAT);
 	}
-
 	return Plugin_Handled;
 }
 
@@ -583,14 +576,14 @@ public Action:PunishTimer(Handle:timer, any:client)
 
 		new Float:vecPos[3];
 		GetClientAbsOrigin(client, vecPos);
+		
 		EmitSoundToAll("buttons/button17.wav", client, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 1.0, SNDPITCH_NORMAL, -1, vecPos, NULL_VECTOR, true, 0.0);
-		//EmitSoundToClient(client, "buttons/button17.wav", client, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 1.0, SNDPITCH_NORMAL, -1, vecPos, NULL_VECTOR, true, 0.0);
 	}
 
 	new ClientHealth = GetClientHealth(client);
 	new MinHealth = GetConVarInt(g_CvarMinHealth);
 
-	// take player cash
+	// Take player cash
 	if(GetConVarInt(g_CvarTakeCash) > 0)
 	{
 		if(ClientHealth > MinHealth || GetConVarBool(g_CvarPunishAnyway))
@@ -616,7 +609,7 @@ public Action:PunishTimer(Handle:timer, any:client)
 	{
 		case 1:
 		{
-			// slap player
+			// Slap player
 			new SlapDmg = GetConVarInt(g_CvarSlapDmg);
 
 			if(ClientHealth > MinHealth)
@@ -645,7 +638,7 @@ public Action:PunishTimer(Handle:timer, any:client)
 		}
 	}
 
-	// blind player
+	// Blind player
 	if(GetConVarBool(g_CvarBlind) && !IsFakeClient(client) && IsPlayerAlive(client))
 	{
 		ClientHealth = GetClientHealth(client);
@@ -658,7 +651,6 @@ public Action:PunishTimer(Handle:timer, any:client)
 		else if(!GetConVarBool(g_CvarPunishAnyway))
 			ResetTimer(client);
 	}
-
 	return Plugin_Handled;
 }
 
@@ -791,7 +783,6 @@ PerformBlind(target, amount)
 			BfWriteByte(message, color[2]);
 			BfWriteByte(message, color[3]);
 		}
-
 		EndMessage();
 	}
 }
